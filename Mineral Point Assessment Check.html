@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mineral Point Assessment Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one guided column. Intro → the one idea → steps 1–3 → result → what to do next → glossary → data (collapsed). */
+:root{
+  --bg:#f4f6f4; --surface:#ffffff; --fg:#1c2421; --muted:#56635d; --line:#d7ddd9;
+  --accent:#1f6b5c; --accent-soft:#e2efeb; --on-accent:#ffffff;
+  --good:#2f7a3c; --good-soft:#e5f2e6; --warn:#9a5f05; --warn-soft:#fbf0dc; --bad:#b0342b; --bad-soft:#fbe6e3;
+  --f-display:"Bitter", Georgia, "Times New Roman", serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141917; --surface:#1c2320; --fg:#e6ece9; --muted:#9db0a8; --line:#2f3935;
+  --accent:#62b8a4; --accent-soft:#1f3530; --on-accent:#0f1513;
+  --good:#7cc68a; --good-soft:#1e3323; --warn:#e2ad5a; --warn-soft:#3a2d17; --bad:#ec8a80; --bad-soft:#3d2220; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141917; --surface:#1c2320; --fg:#e6ece9; --muted:#9db0a8; --line:#2f3935;
+  --accent:#62b8a4; --accent-soft:#1f3530; --on-accent:#0f1513;
+  --good:#7cc68a; --good-soft:#1e3323; --warn:#e2ad5a; --warn-soft:#3a2d17; --bad:#ec8a80; --bad-soft:#3d2220; color-scheme:dark}
+*{box-sizing:border-box} [hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.55 var(--f-body);padding-inline:16px;padding-block:24px 56px}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:36px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(1.9rem,5vw,2.6rem)}
+h2{font-size:clamp(1.3rem,3.4vw,1.6rem)}
+h3{font-size:1.08rem}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.lede{font-size:1.1rem;margin-top:10px;max-width:62ch}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+section{display:grid;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:14px;min-width:0}
+
+/* disclaimer */
+.disclaimer{display:grid;gap:6px;padding:12px 16px;border-left:4px solid var(--warn);background:var(--warn-soft);border-radius:0 10px 10px 0;font-size:.95rem;margin-top:18px}
+
+/* before you start */
+.need{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
+.need div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.95rem}
+.need b{display:block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+
+/* the one idea */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font-weight:600}
+.formula span.t{background:var(--accent-soft);color:var(--fg);padding:6px 12px;border-radius:8px}
+.formula span.o{font-family:var(--f-mono);font-size:1.3rem;color:var(--muted)}
+.formula span.r{background:var(--accent);color:var(--on-accent);padding:6px 12px;border-radius:8px}
+
+/* steps */
+.stephead{display:flex;gap:12px;align-items:center}
+.num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--f-mono);font-weight:500}
+label{font-weight:600;display:block;margin-bottom:4px}
+.hint{font-weight:400;color:var(--muted);font-size:.9rem}
+.field{position:relative}
+.field .pre,.field .suf{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--f-mono);color:var(--muted);pointer-events:none}
+.field .pre{left:12px} .field .suf{right:12px}
+input{width:100%;font:inherit;font-family:var(--f-mono);font-size:1rem;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);min-height:44px}
+.field .pre~input{padding-left:26px}
+.field input.hassuf{padding-right:30px}
+input:focus-visible,button:focus-visible,summary:focus-visible,th:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.big input{font-size:1.3rem}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.choice{font:inherit;text-align:left;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);cursor:pointer;display:grid;gap:2px;min-height:44px}
+.choice b{font-size:1rem}
+.choice span{font-size:.88rem;color:var(--muted)}
+.choice[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.sale{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:12px;border:1px solid var(--line);border-radius:10px}
+.sale .n{grid-column:1/-1;font-size:.85rem;font-weight:700;color:var(--muted)}
+@media (max-width:520px){.sale{grid-template-columns:1fr 1fr}.sale .n~div:first-of-type{grid-column:1/-1}}
+.growth{display:grid;grid-template-columns:minmax(0,8.5rem) minmax(0,1fr);gap:14px;align-items:center;padding:14px;border-radius:10px;background:var(--accent-soft)}
+@media (max-width:520px){.growth{grid-template-columns:1fr}}
+
+/* result */
+.result{border:2px solid var(--accent)}
+.ratioline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.ratio{font-family:var(--f-mono);font-size:clamp(2.6rem,9vw,3.4rem);font-weight:500;line-height:1}
+.verdict{display:inline-block;padding:5px 12px;border-radius:999px;font-weight:700}
+.v-ok{background:var(--good-soft);color:var(--good)}
+.v-look{background:var(--warn-soft);color:var(--warn)}
+.v-strong{background:var(--bad-soft);color:var(--bad)}
+.v-low{background:var(--accent-soft);color:var(--accent)}
+.scale{position:relative;height:12px;border-radius:6px;background:linear-gradient(90deg,var(--accent-soft) 0 25%,var(--good-soft) 25% 50%,var(--warn-soft) 50% 68.75%,var(--bad-soft) 68.75% 100%);border:1px solid var(--line)}
+.scale i{position:absolute;top:-6px;width:4px;height:22px;background:var(--fg);border-radius:2px;transform:translateX(-2px)}
+.ticks{position:relative;height:1.2em;font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.ticks span{position:absolute;transform:translateX(-50%)} .ticks span:first-child{transform:none} .ticks span:last-child{transform:translateX(-100%)}
+.compare{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.compare{grid-template-columns:1fr}}
+.compare div{background:var(--bg);border-radius:10px;padding:10px 12px}
+.compare b{display:block;font-size:.82rem;color:var(--muted);font-weight:600}
+.compare .mono{font-size:1.15rem}
+.meaning{padding:14px 16px;border-radius:10px;background:var(--bg);display:grid;gap:6px}
+details{border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600;color:var(--accent);min-height:28px}
+.steps{margin:10px 0 0;padding-left:22px;display:grid;gap:4px;font-size:.95rem}
+.steps b{font-family:var(--f-mono);font-weight:500}
+.warnmsg{color:var(--warn);font-weight:600;font-size:.95rem}
+
+.savings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:520px){.savings{grid-template-columns:1fr}}
+.save{border-radius:12px;padding:16px;background:var(--good-soft);display:grid;gap:2px}
+.save b{font-size:.85rem;color:var(--good);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.save .mono{font-size:clamp(2rem,7vw,2.6rem);font-weight:500;line-height:1.1;color:var(--fg)}
+.save.total{background:var(--good);}
+.save.total b,.save.total .mono,.save.total .small{color:var(--on-accent)}
+.savings.none .save{background:var(--bg)} .savings.none .save b,.savings.none .save .mono,.savings.none .save .small{color:var(--muted)}
+.fromto{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center}
+.fromto>div{background:var(--bg);border-radius:10px;padding:10px 12px;display:grid;gap:2px}
+.fromto b{font-size:.82rem;color:var(--muted);font-weight:600}
+.fromto .mono{font-size:1.25rem}
+.fromto .arrow{font-size:1.4rem;color:var(--muted)}
+@media (max-width:520px){.fromto{grid-template-columns:1fr}.fromto .arrow{justify-self:center;transform:rotate(90deg)}}
+/* next steps */
+ol.todo{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:t}
+ol.todo li{counter-increment:t;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+ol.todo li::before{content:counter(t);width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-mono)}
+ol.todo li div{display:grid;gap:4px}
+.when{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.contact{font-family:var(--f-mono);font-size:.92rem;overflow-wrap:anywhere}
+.contact a{display:inline-block;min-height:28px}
+
+/* data */
+.data>details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.data>details>summary{font-family:var(--f-display);font-size:1.08rem;color:var(--fg)}
+.data>details[open]>summary{margin-bottom:10px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+#rep{min-width:600px} #tbl{min-width:680px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+th{font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--bg);user-select:none}
+#tbl th{cursor:pointer}
+th[aria-sort="ascending"]::after{content:" ▲"} th[aria-sort="descending"]::after{content:" ▼"}
+td{font-family:var(--f-mono)} td:first-child{font-family:var(--f-body);font-weight:600}
+tfoot td{border-top:2px solid var(--line);border-bottom:none;font-weight:700}
+.pill{display:inline-block;min-width:3.4em;text-align:center;padding:1px 6px;border-radius:999px;font-weight:500}
+footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
+@media (prefers-reduced-motion:no-preference){.scale i{transition:left .3s ease}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">City of Mineral Point · 2026 revaluation</div>
+    <h1>Is my 2026 assessment fair?</h1>
+    <p class="lede">Most Mineral Point assessments jumped this year because the City re-valued every home to today's prices. A big increase isn't automatically unfair. What matters is whether <b>your</b> home is assessed at the same share of its value as everyone else's. This page helps you check in about five minutes.</p>
+    <div class="disclaimer">
+      <p><b>Made by a Mineral Point resident</b> to help neighbors check their own assessments. It is not from the City of Mineral Point or Equity Appraisal, and it is not an appraisal or legal advice.</p>
+      <p>It can't see condition: a dated home and a renovated one look alike to this math. Treat a high ratio as a reason to look closer, not proof.</p>
+    </div>
+    <div class="need">
+      <div><b>You'll need</b>Your 2026 assessment notice (the total value).</div>
+      <div><b>And one of these</b>What you paid and when, a few similar homes that sold nearby, or a recent appraisal.</div>
+      <div><b>Your privacy</b>Nothing you type is saved or sent anywhere. It stays on this page.</div>
+    </div>
+  </header>
+
+  <section>
+    <h2>The one idea behind it</h2>
+    <p>Wisconsin law says every home must be assessed at the same percentage of what it would sell for. So the test is a simple division:</p>
+    <div class="formula" aria-label="Your assessed value divided by your home's market value equals your ratio">
+      <span class="t">Your assessed value</span><span class="o">÷</span><span class="t">Your home's market value</span><span class="o">=</span><span class="r">Your ratio</span>
+    </div>
+    <p class="small muted">Source: Wisconsin Department of Revenue, <a href="https://www.revenue.wi.gov/DOR%20Publications/pb060.pdf#page=10" target="_blank" rel="noopener"><i>2026 Guide for Property Owners</i> (PB-060)</a>, Section III, "Equitable Assessment," page 10.</p>
+    <p>Recent Mineral Point sales are assessed at about <b>99%</b> of their value, on average. If your ratio is close to that, your assessment is in line with your neighbors'. If it's well above, you may be paying more than your share.</p>
+  </section>
+
+  <form id="f" autocomplete="off" novalidate style="display:grid;gap:20px">
+    <div class="card">
+      <div class="stephead"><span class="num">1</span><h2>Your assessed value</h2></div>
+      <div class="big">
+        <label for="assessed">2026 total assessed value <span class="hint">(land + improvements, from your notice)</span></label>
+        <div class="field"><span class="pre">$</span><input id="assessed" inputmode="numeric" value="300,000"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stephead"><span class="num">2</span><h2>What's your home worth?</h2></div>
+      <p class="muted">Pick the best evidence you have. A recent purchase of your own home is usually strongest.</p>
+      <div class="choices" role="group" aria-label="Evidence of market value">
+        <button type="button" class="choice" data-m="buy" aria-pressed="true"><b>I bought it recently</b><span>Within about the last 5 years</span></button>
+        <button type="button" class="choice" data-m="comps" aria-pressed="false"><b>Similar homes sold</b><span>Use 2–3 nearby sales</span></button>
+        <button type="button" class="choice" data-m="appr" aria-pressed="false"><b>I have an appraisal</b><span>From a bank or appraiser</span></button>
+      </div>
+
+      <div id="m-buy" class="row">
+        <div><label for="bp">Purchase price</label><div class="field"><span class="pre">$</span><input id="bp" inputmode="numeric" value="215,000"></div></div>
+        <div><label for="bd">Purchase date</label><input id="bd" type="date" value="2022-08-15"></div>
+        <div><label for="bi">Major improvements since <span class="hint">(cost; 0 if none)</span></label><div class="field"><span class="pre">$</span><input id="bi" inputmode="numeric" value="0"></div></div>
+      </div>
+
+      <div id="m-comps" hidden style="display:grid;gap:12px">
+        <div class="row"><div><label for="mysf">Your living area <span class="hint">(sq ft, from your property record)</span></label><input id="mysf" inputmode="numeric" value="1,800"></div></div>
+        <div class="sale"><span class="n">Sale 1</span><div><label for="c1p">Price</label><div class="field"><span class="pre">$</span><input id="c1p" inputmode="numeric" value="275,000"></div></div><div><label for="c1d">Date sold</label><input id="c1d" type="date" value="2025-06-01"></div><div><label for="c1s">Sq ft</label><input id="c1s" inputmode="numeric" value="1,750"></div></div>
+        <div class="sale"><span class="n">Sale 2</span><div><label for="c2p">Price</label><div class="field"><span class="pre">$</span><input id="c2p" inputmode="numeric" value="262,000"></div></div><div><label for="c2d">Date sold</label><input id="c2d" type="date" value="2025-03-15"></div><div><label for="c2s">Sq ft</label><input id="c2s" inputmode="numeric" value="1,900"></div></div>
+        <div class="sale"><span class="n">Sale 3 (optional)</span><div><label for="c3p">Price</label><div class="field"><span class="pre">$</span><input id="c3p" inputmode="numeric" value=""></div></div><div><label for="c3d">Date sold</label><input id="c3d" type="date" value=""></div><div><label for="c3s">Sq ft</label><input id="c3s" inputmode="numeric" value=""></div></div>
+        <p class="small muted">Choose homes like yours: similar age, size, style and condition, sold in 2024–2026. The recent-sales list at the bottom of this page can help. Differences in size are adjusted at $60 per square foot.</p>
+      </div>
+
+      <div id="m-appr" class="row" hidden>
+        <div><label for="av">Appraised value</label><div class="field"><span class="pre">$</span><input id="av" inputmode="numeric" value="270,000"></div></div>
+        <div><label for="ad">Appraisal date</label><input id="ad" type="date" value="2025-09-01"></div>
+      </div>
+
+      <div class="growth">
+        <div><label for="g">Price growth per year</label><div class="field"><input id="g" class="hassuf" inputmode="decimal" value="5.2"><span class="suf">%</span></div></div>
+        <p class="small">Assessments value every home as of <b>January 1, 2026</b>, so older prices are brought forward to that date. Based on 13 City homes that sold twice (listed at the bottom of this page), the median price increase was 5.2% a year. The Wisconsin Department of Revenue allows up to 8%.</p>
+      </div>
+    </div>
+
+    <div class="card result" aria-live="polite">
+      <div class="stephead"><span class="num">3</span><h2>Your result</h2></div>
+      <div class="ratioline">
+        <div class="ratio" id="ratio">–</div>
+        <span class="verdict" id="verdict">–</span>
+      </div>
+      <div>
+        <div class="scale" aria-hidden="true"><i id="mark" style="left:50%"></i></div>
+        <div class="ticks" aria-hidden="true"><span style="left:0">70%</span><span style="left:25%">90%</span><span style="left:50%">110%</span><span style="left:68.75%">125%</span><span style="left:100%">150%+</span></div>
+      </div>
+      <div class="compare">
+        <div><b>Estimated value, Jan 1</b><span class="mono" id="mv">–</span></div>
+        <div><b>Your assessment</b><span class="mono" id="as">–</span></div>
+        <div><b>At the City's typical 99%</b><span class="mono" id="fair">–</span></div>
+      </div>
+      <div class="meaning">
+        <h3>What this means</h3>
+        <p id="mean">Enter your numbers above.</p>
+        <p class="warnmsg" id="msg" hidden></p>
+      </div>
+      <details>
+        <summary>Show how this was figured</summary>
+        <ol class="steps" id="steps"></ol>
+      </details>
+    </div>
+
+    <div class="card" aria-live="polite">
+      <div class="stephead"><span class="num">4</span><h2>What it could save you in taxes</h2></div>
+      <div class="fromto">
+        <div><b>Your assessment now</b><span class="mono" id="t-now">–</span></div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div><b>Assumed new assessment</b><span class="mono" id="t-new">–</span><span class="small muted" id="t-newnote"></span></div>
+      </div>
+      <p class="muted" id="savelead">Fill in steps 1 and 2 to see your estimate.</p>
+      <div class="savings" id="savebox">
+        <div class="save"><b>Each year</b><span class="mono" id="peryr">–</span></div>
+        <div class="save total"><b>Until the next revaluation</b><span class="mono" id="total">–</span><span class="small" id="totalnote"></span></div>
+      </div>
+      <div class="row">
+        <div><label for="tr">Tax per $1,000 of assessed value</label><div class="field"><span class="pre">$</span><input id="tr" inputmode="decimal" value="15"></div></div>
+        <div><label for="yrs">Years until the next revaluation</label><input id="yrs" type="number" inputmode="numeric" min="1" max="15" step="1" value="5"></div>
+      </div>
+      <p class="small muted">$15 per $1,000 is a rough 2026 estimate; your December tax bill will show the real rate. Your assessment generally stays at the same share of market value until the City re-values everyone again, so an over-assessment repeats every year until then. These are rough figures at today's tax rate.</p>
+    </div>
+  </form>
+
+  <section>
+    <h2>If your ratio is high: what to do next</h2>
+    <p class="muted">Most people never get past step 1. Calling is free, and errors on the property record (wrong square footage, bathrooms, basement) are often fixed on the spot.</p>
+    <ol class="todo">
+      <li><div><span class="when">Start here</span><h3>Call the assessor</h3><p>Equity Appraisal, LLC does the City's assessments. Ask which sales support your value, and ask for your property record so you can check it for errors.</p><p class="contact"><a href="mailto:equityappraisalsm@yahoo.com?subject=Question%20about%20my%202026%20Mineral%20Point%20assessment">equityappraisalsm@yahoo.com</a> · <a href="tel:+16088260009">608-826-0009</a></p></div></li>
+      <li><div><span class="when">At least 48 hours before the Board meets</span><h3>Tell the City Clerk you plan to object</h3><p>If talking doesn't resolve it, you can appeal to the Board of Review. For 2026 it meets <b>Wednesday, October 14</b>. You must give the clerk notice first.</p><p class="contact"><a href="mailto:cityclerk@cityofmineralpointwi.gov?subject=Notice%20of%20intent%20to%20object%20-%202026%20assessment">cityclerk@cityofmineralpointwi.gov</a> · <a href="tel:+16089872361">608-987-2361</a></p></div></li>
+      <li><div><span class="when">The clerk asked for it by October 12</span><h3>Fill out the objection form</h3><p>Form PA-115A asks what you think your home is worth and why. Send the completed form to the City Clerk.</p><p><a href="https://www.revenue.wi.gov/DORForms/pa-115af.pdf" target="_blank" rel="noopener">Form PA-115A (PDF)</a></p></div></li>
+      <li><div><span class="when">At the hearing</span><h3>Bring your evidence</h3><p>Bring copies of whatever supports your value, such as sales of similar homes or your purchase records. The state's guide explains how the hearing works.</p><p><a href="https://www.revenue.wi.gov/DOR%20Publications/pb060.pdf" target="_blank" rel="noopener">State guide for property owners (PDF)</a></p></div></li>
+    </ol>
+  </section>
+
+
+  <section class="data">
+    <h2>The data behind this page</h2>
+    <details>
+      <summary>Where the 5.2% comes from: City homes that sold twice</summary>
+      <p class="small muted">When the same house sells twice, the change in price shows how fast the market moved. These 13 homes were held about 2 years or more between sales. Quick resales and renovate-and-resell cases are left out, because their jumps reflect improvements, not the market.</p>
+      <div class="tablewrap"><table id="rep">
+        <thead><tr><th>Address</th><th>First sale</th><th>Price</th><th>Second sale</th><th>Price</th><th>Years</th><th>Per year</th></tr></thead>
+        <tbody></tbody><tfoot></tfoot>
+      </table></div>
+    </details>
+    <details>
+      <summary>Recent City sales and how they're assessed</summary>
+      <p class="small muted">Eighteen arm's-length sales from 2024–2026 with their 2026 assessed values. The ratio compares each assessment with its sale price brought forward to January 1, 2026 at the growth rate you entered (now <b id="gnow">5.2%</b>). Most land near 99%. Tap a column heading to sort.</p>
+      <div class="tablewrap"><table id="tbl">
+        <thead><tr><th data-k="a">Address</th><th data-k="y">Built</th><th data-k="s">Sq ft</th><th data-k="d">Sold</th><th data-k="p">Sale price</th><th data-k="v">2026 assessed</th><th data-k="r" aria-sort="descending">Ratio</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <p class="small muted" style="margin-top:8px">* 107 Dodge St was recorded as two partial-interest deeds; its full price is unconfirmed. Living area for 821 Pleasant St includes finished basement space.</p>
+    </details>
+    <footer>
+      <p>Sources: Wisconsin Department of Revenue real estate transfer returns; City of Mineral Point 2026 assessment records and City Clerk.</p>
+    </footer>
+  </section>
+</div>
+
+<script>
+const V=new Date('2026-01-01T00:00:00');
+const SALES=[
+["209 Washington St",1900,1970,"2025-05-30",209900,354900],
+["1005 S Wisconsin St",1920,1850,"2025-05-02",205000,310600],
+["404 Pine St",1991,1944,"2025-07-16",230000,305600],
+["821 Pleasant St",1997,1556,"2025-11-21",268000,324300],
+["216 Fountain St",1840,1572,"2024-05-22",250000,289000],
+["107 Dodge St*",1900,1890,"2025-04-07",300000,334400],
+["225 Washington St",1926,1396,"2026-03-24",247000,246000],
+["322 Maiden St",1900,2124,"2024-10-04",310000,330300],
+["420 Washington St",1920,1688,"2025-05-20",305000,313300],
+["315 Pine St",1900,1584,"2024-11-20",289900,304800],
+["918 S Wisconsin St",1910,1828,"2025-11-14",296000,295300],
+["336 7th St",2002,1680,"2024-12-06",339000,353700],
+["213 Clowney St",1847,1928,"2025-03-07",313500,316300],
+["615 High St",1899,2000,"2025-02-07",262500,254200],
+["415 N Wisconsin St",1880,1916,"2026-05-18",280000,249100],
+["825 Fountain St",1920,1776,"2026-03-20",307500,273800],
+["430 Doty St",1915,2487,"2025-07-15",330000,287500],
+["619 S Wisconsin St",1910,2380,"2024-08-28",292900,236000]];
+const REPEAT=[
+["115 Jail Alley","2023-01-05",215000,"2025-11-19",220000],["750 Fair St","2022-11-10",305000,"2024-10-25",330000],["108 4th St","2024-04-30",365000,"2026-05-26",400000],["1005 S Wisconsin St","2021-01-26",169000,"2025-05-02",205000],["209 Washington St","2023-04-27",189900,"2025-05-30",209900],["104 N Iowa St","2020-02-01",170000,"2025-10-31",225000],["619 S Wisconsin St","2022-09-06",265000,"2024-08-28",292900],["415 N Wisconsin St","2023-01-13",232000,"2026-05-18",280000],["51 Jail Alley","2023-08-25",290000,"2025-08-29",330000],["216 Fountain St","2016-12-29",155000,"2024-05-22",250000],["422 Doty St","2020-07-01",177000,"2025-12-29",260000],["225 Washington St","2021-12-15",155000,"2026-03-24",247000],["335 7th St","2021-04-01",148000,"2025-12-30",250000]];
+const $=id=>document.getElementById(id);
+const num=s=>{const v=parseFloat(String(s).replace(/[$,%\s]/g,''));return isFinite(v)?v:NaN};
+const money=v=>(v<0?'−':'')+'$'+Math.round(Math.abs(v)).toLocaleString('en-US');
+const yrs=d=>(V-new Date(d+'T00:00:00'))/(365*864e5);
+const grow=(p,d,g)=>p*Math.pow(1+g,yrs(d));
+const fmtDate=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',year:'numeric'});
+function curG(){const g=num($('g').value)/100;return isFinite(g)?g:0.052}
+let mode='buy';
+
+document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{
+  mode=b.dataset.m;
+  document.querySelectorAll('.choice').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+  ['buy','comps','appr'].forEach(m=>$('m-'+m).hidden=m!==mode);
+  calc();
+}));
+
+const MEAN={
+  'v-low':r=>`Your home is assessed at a lower share of its value than most. That works in your favor, so there's usually no reason to appeal.`,
+  'v-ok':r=>`Your assessment is in line with how other recent sales in the City are assessed. Even if the increase felt large, it appears to match the market.`,
+  'v-look':r=>`Your assessment is somewhat higher than typical. Before deciding anything, check your property record for errors and compare with a few more sales of similar homes.`,
+  'v-strong':r=>`Your assessment is well above how similar sales are assessed. Unless your home has features or updates the math can't see, it's worth talking to the assessor. See "What to do next" below.`
+};
+
+function taxes(diff,c,A,fair,mv){
+  const tr=num($('tr').value), n=Math.max(1,Math.round(num($('yrs').value)||1));
+  const box=$('savebox'), lead=$('savelead');
+  $('t-now').textContent=A>0?money(A):'–';
+  if(!(diff>0)||!(tr>0)||c==='v-ok'||c==='v-low'||!c){
+    $('t-new').textContent=c?(A>0?money(A):'–'):'–'; $('t-newnote').textContent=c?'No change':'';
+    box.classList.add('none'); $('peryr').textContent='$0'; $('total').textContent='$0'; $('totalnote').textContent='';
+    lead.textContent=c?'Your assessment is in line with or below how other City homes are assessed, so an appeal probably wouldn\'t lower your taxes.':'Fill in steps 1 and 2 to see your estimate.';
+    return;}
+  box.classList.remove('none');
+  $('t-new').textContent=money(fair); $('t-newnote').textContent=`99% of your estimated value of ${money(mv)}`;
+  lead.textContent=`Lowering your assessment by ${money(diff)} would cut your property tax by about:`;
+  const y=diff/1000*tr;
+  $('peryr').textContent=money(y); $('total').textContent=money(y*n);
+  $('totalnote').textContent=`over ${n} year${n>1?'s':''}`;
+}
+
+function calc(){
+  const A=num($('assessed').value), g=curG(), tr=num($('tr').value);
+  const steps=[]; let mv=NaN, msg='';
+  if(mode==='buy'){
+    const p=num($('bp').value), d=$('bd').value, imp=num($('bi').value)||0;
+    if(p>0&&d){const t=grow(p,d,g); mv=t+imp;
+      steps.push(`You paid <b>${money(p)}</b> in ${fmtDate(d)}.`);
+      steps.push(`${yrs(d)>=0?'Brought forward':'Brought back'} ${Math.abs(yrs(d)).toFixed(1)} years at ${(g*100).toFixed(1)}% a year to Jan 1, 2026: <b>${money(t)}</b>.`);
+      if(imp) steps.push(`Plus improvements: <b>${money(imp)}</b>, for <b>${money(mv)}</b>.`);
+      if(yrs(d)>6) msg='Your purchase is more than about 6 years old, which makes it weaker evidence. Try "Similar homes sold" too.';
+    }
+  } else if(mode==='comps'){
+    const my=num($('mysf').value); const vals=[];
+    for(const i of [1,2,3]){const p=num($('c'+i+'p').value), d=$('c'+i+'d').value, s=num($('c'+i+'s').value);
+      if(p>0&&d){let v=grow(p,d,g); let line=`Sale ${i}: ${money(p)} in ${fmtDate(d)}, brought to Jan 1: <b>${money(v)}</b>`;
+        if(my>0&&s>0){const adj=(my-s)*60; v+=adj; line+=`; ${adj>=0?'+':'−'}${money(Math.abs(adj))} for size difference: <b>${money(v)}</b>`;}
+        steps.push(line+'.'); vals.push(v);}}
+    if(vals.length){vals.sort((a,b)=>a-b); const m=vals.length%2?vals[(vals.length-1)/2]:(vals[vals.length/2-1]+vals[vals.length/2])/2; mv=m;
+      steps.push(`The middle value of ${vals.length} sale${vals.length>1?'s':''}: <b>${money(m)}</b>.`);
+      if(vals.length<2) msg='One sale is thin evidence. Add a second or third similar home.';}
+  } else {
+    const v=num($('av').value), d=$('ad').value;
+    if(v>0&&d){mv=grow(v,d,g); steps.push(`Appraised at <b>${money(v)}</b> in ${fmtDate(d)}.`); steps.push(`${yrs(d)>=0?'Brought forward':'Brought back'} to Jan 1, 2026 at ${(g*100).toFixed(1)}% a year: <b>${money(mv)}</b>.`);}
+  }
+  $('msg').textContent=msg; $('msg').hidden=!msg;
+  if(!(A>0)||!(mv>0)){
+    $('steps').innerHTML='<li>Fill in steps 1 and 2.</li>';
+    ['ratio','mv','fair'].forEach(k=>$(k).textContent='–'); $('as').textContent=A>0?money(A):'–';
+    $('verdict').textContent='Waiting for your numbers'; $('verdict').className='verdict v-low';
+    $('mean').textContent='Enter your numbers above.'; taxes(NaN,'',A); return;
+  }
+  const r=A/mv, fair=mv*0.99, diff=A-fair;
+  steps.push(`Your assessment ÷ that value: ${money(A)} ÷ ${money(mv)} = <b>${Math.round(r*100)}%</b>.`);
+  $('steps').innerHTML=steps.map(s=>`<li>${s}</li>`).join('');
+  $('ratio').textContent=Math.round(r*100)+'%';
+  $('mv').textContent=money(mv); $('as').textContent=money(A); $('fair').textContent=money(fair);
+  let v,c;
+  if(r<0.9){v='Below the typical range';c='v-low'}
+  else if(r<=1.1){v='In line with the City';c='v-ok'}
+  else if(r<=1.25){v='Worth a closer look';c='v-look'}
+  else {v='Strong reason to look into it';c='v-strong'}
+  $('verdict').textContent=v; $('verdict').className='verdict '+c;
+  let m=MEAN[c](r);
+  if(c==='v-look'||c==='v-strong') m+=` At the City's typical 99%, your assessment would be about ${money(fair)}, which is ${money(diff)} lower than it is now.`;
+  $('mean').textContent=m;
+  taxes(diff,c,A,fair,mv);
+  $('mark').style.left=Math.max(0,Math.min(100,(r-0.7)/(1.5-0.7)*100))+'%';
+}
+
+// repeat-sales table
+(function(){const ys=(a,b)=>(new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/(365*864e5);
+ const R=REPEAT.map(([a,d1,p1,d2,p2])=>{const y=ys(d1,d2);return {a,d1,p1,d2,p2,y,r:Math.pow(p2/p1,1/y)-1}}).sort((x,z)=>x.r-z.r);
+ document.querySelector('#rep tbody').innerHTML=R.map(o=>`<tr><td>${o.a}</td><td>${fmtDate(o.d1)}</td><td>${money(o.p1)}</td><td>${fmtDate(o.d2)}</td><td>${money(o.p2)}</td><td>${o.y.toFixed(1)}</td><td>${(o.r*100).toFixed(1)}%</td></tr>`).join('');
+ const med=R[(R.length-1)/2].r;
+ document.querySelector('#rep tfoot').innerHTML=`<tr><td colspan="6">Median of ${R.length} homes</td><td>${(med*100).toFixed(1)}%</td></tr>`;
+})();
+
+// recent-sales table
+const rows=SALES.map(([a,y,s,d,p,v])=>({a,y,s,d,p,v,r:0}));
+let sortK='r',dir=-1;
+function pillClass(r){return r<0.9?'v-low':r<=1.1?'v-ok':r<=1.25?'v-look':'v-strong'}
+function draw(){
+  const g=curG(); rows.forEach(o=>o.r=o.v/grow(o.p,o.d,g)); $('gnow').textContent=(g*100).toFixed(1)+'%';
+  rows.sort((x,y)=>{const A=x[sortK],B=y[sortK];return (A>B?1:A<B?-1:0)*dir});
+  document.querySelector('#tbl tbody').innerHTML=rows.map(o=>`<tr><td>${o.a}</td><td>${o.y}</td><td>${o.s.toLocaleString('en-US')}</td><td>${fmtDate(o.d)}</td><td>${money(o.p)}</td><td>${money(o.v)}</td><td><span class="pill ${pillClass(o.r)}">${Math.round(o.r*100)}%</span></td></tr>`).join('');
+  document.querySelectorAll('#tbl th').forEach(th=>th.setAttribute('aria-sort',th.dataset.k===sortK?(dir>0?'ascending':'descending'):'none'));
+}
+document.querySelectorAll('#tbl th').forEach(th=>{th.tabIndex=0;const go=()=>{const k=th.dataset.k;dir=(k===sortK)?-dir:(k==='a'?1:-1);sortK=k;draw()};th.addEventListener('click',go);th.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+
+$('f').addEventListener('input',()=>{calc();draw();});
+$('f').addEventListener('submit',e=>e.preventDefault());
+draw(); calc();
+</script>
+</body>
+</html>
