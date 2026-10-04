@@ -122,13 +122,14 @@ summary{cursor:pointer;font-weight:600;color:var(--accent);min-height:28px}
 @media (max-width:520px){.fromto{grid-template-columns:1fr}.fromto .arrow{justify-self:center;transform:rotate(90deg)}}
 /* next steps */
 ol.todo{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:t}
-ol.todo li{counter-increment:t;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
-ol.todo li::before{content:counter(t);width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-mono)}
-ol.todo li div{display:grid;gap:4px}
+ol.todo>li{counter-increment:t;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+ol.todo>li::before{content:counter(t);width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-mono)}
+ol.todo>li>div{display:grid;gap:4px}
 .when{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:700}
 .contact{font-family:var(--f-mono);font-size:.92rem;overflow-wrap:anywhere}
 .contact a{display:inline-block;min-height:28px}
 
+.asks{margin:4px 0 2px;padding-left:20px;display:grid;gap:4px;list-style:disc}.asks li{display:list-item}
 /* data */
 .data>details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .data>details>summary{font-family:var(--f-display);font-size:1.08rem;color:var(--fg)}
@@ -214,8 +215,8 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
       </div>
 
       <div class="growth">
-        <div><label for="g">Price growth per year</label><div class="field"><input id="g" class="hassuf" inputmode="decimal" value="5.2"><span class="suf">%</span></div></div>
-        <p class="small">Assessments value every home as of <b>January 1, 2026</b>, so older prices are brought forward to that date. Based on 13 City homes that sold twice (listed at the bottom of this page), the median price increase was 5.2% a year. The Wisconsin Department of Revenue allows up to 8%.</p>
+        <div><label for="g">Price growth per year</label><div class="field"><input id="g" class="hassuf" inputmode="decimal" value="5.1"><span class="suf">%</span></div></div>
+        <p class="small">Assessments value every home as of <b>January 1, 2026</b>, so older prices are brought forward to that date. Based on 12 City homes that sold twice (listed at the bottom of this page), the median price increase was 5.1% a year. The Wisconsin Department of Revenue allows up to 8%.</p>
       </div>
     </div>
 
@@ -269,7 +270,13 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
     <h2>If your ratio is high: what to do next</h2>
     <p class="muted">Most people never get past step 1. Calling is free, and errors on the property record (wrong square footage, bathrooms, basement) are often fixed on the spot.</p>
     <ol class="todo">
-      <li><div><span class="when">Start here</span><h3>Call the assessor</h3><p>Equity Appraisal, LLC does the City's assessments. Ask which sales support your value, and ask for your property record so you can check it for errors.</p><p class="contact"><a href="mailto:equityappraisalsm@yahoo.com?subject=Question%20about%20my%202026%20Mineral%20Point%20assessment">equityappraisalsm@yahoo.com</a> · <a href="tel:+16088260009">608-826-0009</a></p></div></li>
+      <li><div><span class="when">Start here</span><h3>Call the assessor</h3><p>Equity Appraisal, LLC does the City's assessments. Useful things to ask for:</p>
+<ul class="asks">
+<li><b>Your property record card.</b> It lists what the City has on file: square footage, bedrooms, bathrooms, basement, garage, condition. Check every line for errors.</li>
+<li><b>The sales they used to value your home</b>, with the date and price of each.</li>
+<li><b>How your value was calculated:</b> the land value, the building value, and any adjustment applied to your neighborhood.</li>
+</ul>
+<p class="small muted">These are public records. If you can't get them from the assessor, the City Clerk can provide them.</p><p class="contact"><a href="mailto:equityappraisalsm@yahoo.com?subject=Question%20about%20my%202026%20Mineral%20Point%20assessment">equityappraisalsm@yahoo.com</a> · <a href="tel:+16088260009">608-826-0009</a></p></div></li>
       <li><div><span class="when">At least 48 hours before the Board meets</span><h3>Tell the City Clerk you plan to object</h3><p>If talking doesn't resolve it, you can appeal to the Board of Review. For 2026 it meets <b>Wednesday, October 14</b>. You must give the clerk notice first.</p><p class="contact"><a href="mailto:cityclerk@cityofmineralpointwi.gov?subject=Notice%20of%20intent%20to%20object%20-%202026%20assessment">cityclerk@cityofmineralpointwi.gov</a> · <a href="tel:+16089872361">608-987-2361</a></p></div></li>
       <li><div><span class="when">The clerk asked for it by October 12</span><h3>Fill out the objection form</h3><p>Form PA-115A asks what you think your home is worth and why. Send the completed form to the City Clerk.</p><p><a href="https://www.revenue.wi.gov/DORForms/pa-115af.pdf" target="_blank" rel="noopener">Form PA-115A (PDF)</a></p></div></li>
       <li><div><span class="when">At the hearing</span><h3>Bring your evidence</h3><p>Bring copies of whatever supports your value, such as sales of similar homes or your purchase records. The state's guide explains how the hearing works.</p><p><a href="https://www.revenue.wi.gov/DOR%20Publications/pb060.pdf" target="_blank" rel="noopener">State guide for property owners (PDF)</a></p></div></li>
@@ -280,8 +287,8 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
   <section class="data">
     <h2>The data behind this page</h2>
     <details>
-      <summary>Where the 5.2% comes from: City homes that sold twice</summary>
-      <p class="small muted">When the same house sells twice, the change in price shows how fast the market moved. These 13 homes were held about 2 years or more between sales. Quick resales and renovate-and-resell cases are left out, because their jumps reflect improvements, not the market.</p>
+      <summary>Where the 5.1% comes from: City homes that sold twice</summary>
+      <p class="small muted">When the same house sells twice, the change in price shows how fast the market moved. These 12 homes were held about 2 years or more between sales. Quick resales and renovate-and-resell cases are left out, because their jumps reflect improvements, not the market.</p>
       <div class="tablewrap"><table id="rep">
         <thead><tr><th>Address</th><th>First sale</th><th>Price</th><th>Second sale</th><th>Price</th><th>Years</th><th>Per year</th></tr></thead>
         <tbody></tbody><tfoot></tfoot>
@@ -289,7 +296,7 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
     </details>
     <details>
       <summary>Recent City sales and how they're assessed</summary>
-      <p class="small muted">Eighteen arm's-length sales from 2024–2026 with their 2026 assessed values. The ratio compares each assessment with its sale price brought forward to January 1, 2026 at the growth rate you entered (now <b id="gnow">5.2%</b>). Most land near 99%. Tap a column heading to sort.</p>
+      <p class="small muted">Eighteen arm's-length sales from 2024–2026 with their 2026 assessed values. The ratio compares each assessment with its sale price brought forward to January 1, 2026 at the growth rate you entered (now <b id="gnow">5.1%</b>). Most land near 99%. Tap a column heading to sort.</p>
       <div class="tablewrap"><table id="tbl">
         <thead><tr><th data-k="a">Address</th><th data-k="y">Built</th><th data-k="s">Sq ft</th><th data-k="d">Sold</th><th data-k="p">Sale price</th><th data-k="v">2026 assessed</th><th data-k="r" aria-sort="descending">Ratio</th></tr></thead>
         <tbody></tbody>
@@ -324,14 +331,14 @@ const SALES=[
 ["430 Doty St",1915,2487,"2025-07-15",330000,287500],
 ["619 S Wisconsin St",1910,2380,"2024-08-28",292900,236000]];
 const REPEAT=[
-["115 Jail Alley","2023-01-05",215000,"2025-11-19",220000],["750 Fair St","2022-11-10",305000,"2024-10-25",330000],["108 4th St","2024-04-30",365000,"2026-05-26",400000],["1005 S Wisconsin St","2021-01-26",169000,"2025-05-02",205000],["209 Washington St","2023-04-27",189900,"2025-05-30",209900],["104 N Iowa St","2020-02-01",170000,"2025-10-31",225000],["619 S Wisconsin St","2022-09-06",265000,"2024-08-28",292900],["415 N Wisconsin St","2023-01-13",232000,"2026-05-18",280000],["51 Jail Alley","2023-08-25",290000,"2025-08-29",330000],["216 Fountain St","2016-12-29",155000,"2024-05-22",250000],["422 Doty St","2020-07-01",177000,"2025-12-29",260000],["225 Washington St","2021-12-15",155000,"2026-03-24",247000],["335 7th St","2021-04-01",148000,"2025-12-30",250000]];
+["115 Jail Alley","2023-01-05",215000,"2025-11-19",220000],["750 Fair St","2022-11-10",305000,"2024-10-25",330000],["108 4th St","2024-04-30",365000,"2026-05-26",400000],["1005 S Wisconsin St","2021-01-26",169000,"2025-05-02",205000],["209 Washington St","2023-04-27",189900,"2025-05-30",209900],["104 N Iowa St","2020-02-01",170000,"2025-10-31",225000],["619 S Wisconsin St","2022-09-06",265000,"2024-08-28",292900],["51 Jail Alley","2023-08-25",290000,"2025-08-29",330000],["216 Fountain St","2016-12-29",155000,"2024-05-22",250000],["422 Doty St","2020-07-01",177000,"2025-12-29",260000],["225 Washington St","2021-12-15",155000,"2026-03-24",247000],["335 7th St","2021-04-01",148000,"2025-12-30",250000]];
 const $=id=>document.getElementById(id);
 const num=s=>{const v=parseFloat(String(s).replace(/[$,%\s]/g,''));return isFinite(v)?v:NaN};
 const money=v=>(v<0?'−':'')+'$'+Math.round(Math.abs(v)).toLocaleString('en-US');
 const yrs=d=>(V-new Date(d+'T00:00:00'))/(365*864e5);
 const grow=(p,d,g)=>p*Math.pow(1+g,yrs(d));
 const fmtDate=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',year:'numeric'});
-function curG(){const g=num($('g').value)/100;return isFinite(g)?g:0.052}
+function curG(){const g=num($('g').value)/100;return isFinite(g)?g:0.051}
 let mode='buy';
 
 document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{
@@ -418,7 +425,7 @@ function calc(){
 (function(){const ys=(a,b)=>(new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/(365*864e5);
  const R=REPEAT.map(([a,d1,p1,d2,p2])=>{const y=ys(d1,d2);return {a,d1,p1,d2,p2,y,r:Math.pow(p2/p1,1/y)-1}}).sort((x,z)=>x.r-z.r);
  document.querySelector('#rep tbody').innerHTML=R.map(o=>`<tr><td>${o.a}</td><td>${fmtDate(o.d1)}</td><td>${money(o.p1)}</td><td>${fmtDate(o.d2)}</td><td>${money(o.p2)}</td><td>${o.y.toFixed(1)}</td><td>${(o.r*100).toFixed(1)}%</td></tr>`).join('');
- const med=R[(R.length-1)/2].r;
+ const n=R.length, med=n%2?R[(n-1)/2].r:(R[n/2-1].r+R[n/2].r)/2;
  document.querySelector('#rep tfoot').innerHTML=`<tr><td colspan="6">Median of ${R.length} homes</td><td>${(med*100).toFixed(1)}%</td></tr>`;
 })();
 
