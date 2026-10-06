@@ -78,8 +78,19 @@ input:focus-visible,button:focus-visible,summary:focus-visible,th:focus-visible{
 .sale{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:12px;border:1px solid var(--line);border-radius:10px}
 .sale .n{grid-column:1/-1;font-size:.85rem;font-weight:700;color:var(--muted)}
 @media (max-width:520px){.sale{grid-template-columns:1fr 1fr}.sale .n~div:first-of-type{grid-column:1/-1}}
-.growth{display:grid;grid-template-columns:minmax(0,8.5rem) minmax(0,1fr);gap:14px;align-items:center;padding:14px;border-radius:10px;background:var(--accent-soft)}
-@media (max-width:520px){.growth{grid-template-columns:1fr}}
+.growth{display:grid;gap:12px;padding:14px;border-radius:10px;background:var(--accent-soft)}
+.growth .glabel{font-weight:600}
+.growth .choice{background:var(--bg)}
+.ratechart{background:var(--bg);border-radius:10px;padding:10px 8px 6px;margin:0}
+.ratechart svg{display:block;width:100%;max-width:600px;height:auto;margin:0 auto}
+.ratechart figcaption{font-size:.82rem;color:var(--muted);padding:4px 6px 0}
+.ratechart .key{display:inline-flex;align-items:center;gap:6px;margin-right:14px;white-space:nowrap}
+.ratechart .sw{display:inline-block;width:18px;height:0;border-top:2.5px solid var(--accent)}
+.ratechart .sw.dash{border-top:2.5px dashed var(--fg)}
+.ratechart .sw.est{width:10px;height:10px;border:2px solid var(--accent);border-radius:50%;background:var(--bg)}
+.ratechart .sw.band{height:10px;border:0;background:var(--accent-soft);outline:1px solid var(--line)}
+.growth .one{max-width:11rem}
+.gpanel{display:grid;gap:10px} .gpanel[hidden]{display:none}
 
 /* result */
 .result{border:2px solid var(--accent)}
@@ -131,20 +142,29 @@ ol.todo>li>div{display:grid;gap:4px}
 
 .asks{margin:4px 0 2px;padding-left:20px;display:grid;gap:4px;list-style:disc}.asks li{display:list-item}
 /* data */
-.data>details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.data{grid-template-columns:minmax(0,1fr)}
+.data>details{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .data>details>summary{font-family:var(--f-display);font-size:1.08rem;color:var(--fg)}
 .data>details[open]>summary{margin-bottom:10px}
 .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px}
 table{border-collapse:collapse;width:100%;font-size:.9rem}
-#rep{min-width:600px} #tbl{min-width:680px}
+#rep{min-width:600px} #tbl{min-width:700px}
+#tbl th{cursor:pointer}
+th[aria-sort="ascending"]::after{content:" ▲"} th[aria-sort="descending"]::after{content:" ▼"}
+.pill{display:inline-block;min-width:3.4em;text-align:center;padding:1px 6px;border-radius:999px;font-weight:500}
+.explain{display:grid;gap:10px}
+.explain p{margin:0}
+.explain h3{font-size:1rem;margin:4px 0 0}
+.tally{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tally div{border-radius:10px;padding:8px 10px;display:grid;gap:2px}
+.tally b{font-family:var(--f-mono);font-size:1.3rem;font-weight:500}
+.tally span{font-size:.8rem}
+@media (max-width:520px){.tally{grid-template-columns:repeat(2,minmax(0,1fr))}}
 th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 th:first-child,td:first-child{text-align:left}
 th{font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--bg);user-select:none}
-#tbl th{cursor:pointer}
-th[aria-sort="ascending"]::after{content:" ▲"} th[aria-sort="descending"]::after{content:" ▼"}
 td{font-family:var(--f-mono)} td:first-child{font-family:var(--f-body);font-weight:600}
 tfoot td{border-top:2px solid var(--line);border-bottom:none;font-weight:700}
-.pill{display:inline-block;min-width:3.4em;text-align:center;padding:1px 6px;border-radius:999px;font-weight:500}
 footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
 @media (prefers-reduced-motion:no-preference){.scale i{transition:left .3s ease}}
 </style>
@@ -174,7 +194,7 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
       <span class="t">Your assessed value</span><span class="o">÷</span><span class="t">Your home's market value</span><span class="o">=</span><span class="r">Your ratio</span>
     </div>
     <p class="small muted">Source: Wisconsin Department of Revenue, <a href="https://www.revenue.wi.gov/DOR%20Publications/pb060.pdf#page=10" target="_blank" rel="noopener"><i>2026 Guide for Property Owners</i> (PB-060)</a>, Section III, "Equitable Assessment," page 10.</p>
-    <p>Recent Mineral Point sales are assessed at about <b>99%</b> of their value, on average. If your ratio is close to that, your assessment is in line with your neighbors'. If it's well above, you may be paying more than your share.</p>
+    <p>Recent Mineral Point sales are typically assessed at about <b class="typ">99%</b> of their value (the middle of 18 recent City sales; see "Where the numbers come from" at the bottom of this page). If your ratio is close to that, your assessment is in line with your neighbors'. If it's well above, you may be paying more than your share.</p>
   </section>
 
   <form id="f" autocomplete="off" novalidate style="display:grid;gap:20px">
@@ -206,7 +226,7 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
         <div class="sale"><span class="n">Sale 1</span><div><label for="c1p">Price</label><div class="field"><span class="pre">$</span><input id="c1p" inputmode="numeric" value="275,000"></div></div><div><label for="c1d">Date sold</label><input id="c1d" type="date" value="2025-06-01"></div><div><label for="c1s">Sq ft</label><input id="c1s" inputmode="numeric" value="1,750"></div></div>
         <div class="sale"><span class="n">Sale 2</span><div><label for="c2p">Price</label><div class="field"><span class="pre">$</span><input id="c2p" inputmode="numeric" value="262,000"></div></div><div><label for="c2d">Date sold</label><input id="c2d" type="date" value="2025-03-15"></div><div><label for="c2s">Sq ft</label><input id="c2s" inputmode="numeric" value="1,900"></div></div>
         <div class="sale"><span class="n">Sale 3 (optional)</span><div><label for="c3p">Price</label><div class="field"><span class="pre">$</span><input id="c3p" inputmode="numeric" value=""></div></div><div><label for="c3d">Date sold</label><input id="c3d" type="date" value=""></div><div><label for="c3s">Sq ft</label><input id="c3s" inputmode="numeric" value=""></div></div>
-        <p class="small muted">Choose homes like yours: similar age, size, style and condition, sold in 2024–2026. The recent-sales list at the bottom of this page can help. Differences in size are adjusted at $60 per square foot.</p>
+        <p class="small muted">Choose homes like yours: similar age, size, style and condition, sold in 2024–2026. Differences in size are adjusted at $60 per square foot.</p>
       </div>
 
       <div id="m-appr" class="row" hidden>
@@ -215,8 +235,23 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
       </div>
 
       <div class="growth">
-        <div><label for="g">Price growth per year</label><div class="field"><input id="g" class="hassuf" inputmode="decimal" value="5.1"><span class="suf">%</span></div></div>
-        <p class="small">Assessments value every home as of <b>January 1, 2026</b>, so older prices are brought forward to that date. Based on 12 City homes that sold twice (listed at the bottom of this page), the median price increase was 5.1% a year. The Wisconsin Department of Revenue allows up to 8%.</p>
+        <span class="glabel">Bringing older prices to January 1, 2026</span>
+        <p class="small">Assessments value every home as of <b>January 1, 2026</b>, so a price from an earlier date has to be brought forward to that date (and a 2026 price brought back).</p>
+        <div class="choices">
+          <button type="button" class="choice" data-g="dor" aria-pressed="true"><b>State's yearly rates</b><span>Recommended</span></button>
+          <button type="button" class="choice" data-g="one" aria-pressed="false"><b>One rate for every year</b><span>Enter your own</span></button>
+        </div>
+        <figure class="ratechart">
+          <svg id="rchart" viewBox="0 0 420 210" role="img" aria-labelledby="rchart-t"><title id="rchart-t">City of Mineral Point home values, market change by year, 2015 to 2025, with a 2026 estimate</title></svg>
+          <figcaption id="rkey"></figcaption>
+        </figure>
+        <div id="g-dor" class="gpanel">
+          <p class="small">Each year's figure is the Wisconsin Department of Revenue's estimate of how much City of Mineral Point home values changed because of the market (not new construction) during that calendar year. A price is grown by each year's rate for the part of that year it covers. The state won't publish 2026 until August 2027, so 2026 prices are brought back at an estimated 7% (the hollow point), the state's latest figure. Statewide, the median sale price was up about 6% in the first half of 2026 (<a href="https://www.wra.org/news/reports/home_sales_reports/" target="_blank" rel="noopener">Wisconsin REALTORS Association</a>), which supports that estimate. Years before 2015 use the 2015–2025 average of about 7%. These figures measure the market; they are not a limit on assessments. Source: <a href="https://www.revenue.wi.gov/Pages/Report/soc-eqv.aspx" target="_blank" rel="noopener">Statements of Changes in Equalized Values</a>, Iowa County, 2016–2026 (older reports via the Internet Archive).</p>
+        </div>
+        <div id="g-one" class="gpanel" hidden>
+          <div class="one"><label for="g">Price growth per year</label><div class="field"><input id="g" class="hassuf" inputmode="decimal" value="7"><span class="suf">%</span></div></div>
+          <p class="small">One rate is applied to every year (the dashed line on the chart). The City's yearly rates averaged about 7% from 2015 to 2025. A typical year was closer to 5%, but 2021 and 2022 were about 19%. One rate will under- or over-state growth depending on when the price was set, so the state's yearly rates are usually more accurate.</p>
+        </div>
       </div>
     </div>
 
@@ -233,7 +268,7 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
       <div class="compare">
         <div><b>Estimated value, Jan 1</b><span class="mono" id="mv">–</span></div>
         <div><b>Your assessment</b><span class="mono" id="as">–</span></div>
-        <div><b>At the City's typical 99%</b><span class="mono" id="fair">–</span></div>
+        <div><b>At the City's typical <span class="typ">99%</span></b><span class="mono" id="fair">–</span></div>
       </div>
       <div class="meaning">
         <h3>What this means</h3>
@@ -285,26 +320,43 @@ footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
 
 
   <section class="data">
-    <h2>The data behind this page</h2>
+    <h2>Where the numbers come from</h2>
+    <p class="muted">Two checks sit behind this page. You don't need them to use it, but they show the evidence if you're curious or want to bring it to the assessor.</p>
+
     <details>
-      <summary>Where the 5.1% comes from: City homes that sold twice</summary>
-      <p class="small muted">When the same house sells twice, the change in price shows how fast the market moved. These 12 homes were held about 2 years or more between sales. Quick resales and renovate-and-resell cases are left out, because their jumps reflect improvements, not the market.</p>
+      <summary>How the City assessed homes that recently sold (where the <span class="typ">99%</span> comes from)</summary>
+      <div class="explain">
+        <p><b>The idea.</b> A sale is the best evidence of what a home is worth. So for homes that sold recently, we can compare the City's 2026 assessment with the price a buyer actually paid. If the City got every home exactly right, each assessment would be 100% of its price.</p>
+        <p><b>What we did.</b> We took 18 ordinary sales (between unrelated buyers and sellers, not foreclosures or family transfers) from 2024–2026. Because assessments value homes as of January 1, 2026, each price is first adjusted to that date using the method chosen in step 2. Then each assessment is divided by that adjusted price.</p>
+        <p><b>What it shows.</b> The ratios spread out, which is normal: the assessor values homes from property records and a pricing model, not one sale at a time, and a record can't see condition, updates or an unusual sale. The <b>middle</b> ratio is <b class="typ">99%</b>. That's the yardstick your own result is compared with: if your ratio is close to it, you're assessed like your neighbors.</p>
+        <div class="tally" id="tally" aria-label="How the 18 sales are spread"></div>
+        <h3>How to read the table</h3>
+        <p class="small muted"><b>Sold for</b> is the actual price. <b>Price on Jan 1, 2026</b> is that price adjusted to the assessment date. <b>Assessed at</b> is the City's 2026 value. <b>Ratio</b> is the assessment divided by the adjusted price; colors match the result scale in step 3. Tap a column heading to sort.</p>
+      </div>
+      <div class="tablewrap"><table id="tbl">
+        <thead><tr><th data-k="a">Address</th><th data-k="y">Built</th><th data-k="d">Sold</th><th data-k="p">Sold for</th><th data-k="t">Price on Jan 1, 2026</th><th data-k="v">Assessed at</th><th data-k="r" aria-sort="descending">Ratio</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <p class="small muted" style="margin-top:8px">* 107 Dodge St was recorded as two partial-interest deeds; its full price is unconfirmed. Assessed values are from the City's assessment records and the City Clerk; sale prices and dates are from state real estate transfer records.</p>
+    </details>
+
+    <details>
+      <summary>Do the state's yearly rates match what Mineral Point homes actually did?</summary>
+      <div class="explain">
+        <p><b>The idea.</b> Step 2 grows older prices using the state's yearly rates. A good way to test those rates is with homes that sold twice: grow the first price by the rates and see how close it lands to the second price.</p>
+        <p><b>What we did.</b> We used 12 City homes that sold twice, held about 2 years or more. Quick resales and fix-and-flip sales are left out, because their price jumps come from renovations, not the market.</p>
+        <p><b>What it shows.</b> <span id="repnote"></span> In other words, the state's rates are a reasonable guide but may run a little high for individual older homes. Each home differs in condition and upkeep, so this is a rough check, not a correction.</p>
+        <h3>How to read the table</h3>
+        <p class="small muted"><b>State's rates predict</b> is the first price grown to the second sale date. <b>Actual vs. predicted</b> shows how far the real second price landed from that prediction; a perfect match would be 0%.</p>
+      </div>
       <div class="tablewrap"><table id="rep">
-        <thead><tr><th>Address</th><th>First sale</th><th>Price</th><th>Second sale</th><th>Price</th><th>Years</th><th>Per year</th></tr></thead>
+        <thead><tr><th>Address</th><th>First sale</th><th>Price</th><th>Second sale</th><th>Price</th><th>State's rates predict</th><th>Actual vs. predicted</th></tr></thead>
         <tbody></tbody><tfoot></tfoot>
       </table></div>
     </details>
-    <details>
-      <summary>Recent City sales and how they're assessed</summary>
-      <p class="small muted">Eighteen arm's-length sales from 2024–2026 with their 2026 assessed values. The ratio compares each assessment with its sale price brought forward to January 1, 2026 at the growth rate you entered (now <b id="gnow">5.1%</b>). Most land near 99%. Tap a column heading to sort.</p>
-      <div class="tablewrap"><table id="tbl">
-        <thead><tr><th data-k="a">Address</th><th data-k="y">Built</th><th data-k="s">Sq ft</th><th data-k="d">Sold</th><th data-k="p">Sale price</th><th data-k="v">2026 assessed</th><th data-k="r" aria-sort="descending">Ratio</th></tr></thead>
-        <tbody></tbody>
-      </table></div>
-      <p class="small muted" style="margin-top:8px">* 107 Dodge St was recorded as two partial-interest deeds; its full price is unconfirmed. Living area for 821 Pleasant St includes finished basement space.</p>
-    </details>
+
     <footer>
-      <p>Sources: Wisconsin Department of Revenue real estate transfer returns; City of Mineral Point 2026 assessment records and City Clerk.</p>
+      <p>Sources: Wisconsin Department of Revenue real estate transfer returns and Statements of Changes in Equalized Values; City of Mineral Point 2026 assessment records and City Clerk; Wisconsin REALTORS Association.</p>
     </footer>
   </section>
 </div>
@@ -336,16 +388,52 @@ const $=id=>document.getElementById(id);
 const num=s=>{const v=parseFloat(String(s).replace(/[$,%\s]/g,''));return isFinite(v)?v:NaN};
 const money=v=>(v<0?'−':'')+'$'+Math.round(Math.abs(v)).toLocaleString('en-US');
 const yrs=d=>(V-new Date(d+'T00:00:00'))/(365*864e5);
-const grow=(p,d,g)=>p*Math.pow(1+g,yrs(d));
+// City of Mineral Point residential economic change by calendar year (WI DOR Statements of Changes in Equalized Values).
+// 2026 is not published until Aug 2027; 2026 dates are brought back at an estimate equal to the 2025 rate
+// (cross-check: WRA statewide median price +6.3% for 1H 2026).
+const RATES={2015:0.0,2016:0.06,2017:0.0401,2018:0.0498,2019:0.0501,2020:0.04,2021:0.1898,2022:0.19,2023:0.06,2024:0.05,2025:0.07};
+// Years before 2015 use the 2015-2025 compound average (about 7.1%).
+const EST_2026=RATES[2025];
+const FIRST_RATE_YEAR=2015, BACK_RATE=EST_2026, YR=365*864e5;
+const PRE_RATE=Math.pow(Object.values(RATES).reduce((f,r)=>f*(1+r),1),1/Object.keys(RATES).length)-1;
+let gmode='dor';
+function gf(d){
+  const t=new Date(d+'T00:00:00');
+  if(gmode!=='dor') return Math.pow(1+curG(),yrs(d));
+  if(t>=V) return Math.pow(1+BACK_RATE,-(t-V)/YR);
+  let f=1;
+  for(let y=t.getFullYear();y<2026;y++){
+    const s=Math.max(t,new Date(y+'-01-01T00:00:00')), e=new Date((y+1)+'-01-01T00:00:00');
+    const r=RATES[y]!==undefined?RATES[y]:PRE_RATE;
+    f*=Math.pow(1+r,(e-s)/YR);
+  }
+  return f;
+}
+const grow=(p,d)=>p*gf(d);
+function howGrown(d){
+  if(gmode!=='dor') return `at ${(curG()*100).toFixed(1)}% a year`;
+  if(new Date(d+'T00:00:00')>=V) return `at the estimated 2026 rate (${(BACK_RATE*100).toFixed(0)}% a year, the state's latest figure)`;
+  const y=yrs(d), avg=y>0?Math.pow(gf(d),1/y)-1:0;
+  return `using the state's yearly rates (about ${(avg*100).toFixed(1)}% a year on average)`;
+}
+const pct=v=>Math.round(v*100)+'%';
+let TYP=0.99;
 const fmtDate=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',year:'numeric'});
-function curG(){const g=num($('g').value)/100;return isFinite(g)?g:0.051}
+function curG(){const g=num($('g').value)/100;return isFinite(g)?g:0.07}
 let mode='buy';
 
-document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{
+document.querySelectorAll('.choice[data-g]').forEach(b=>b.addEventListener('click',()=>{
+  gmode=b.dataset.g;
+  document.querySelectorAll('.choice[data-g]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+  $('g-dor').hidden=gmode!=='dor'; $('g-one').hidden=gmode!=='one';
+  draw(); calc(); drawChart();
+}));
+
+document.querySelectorAll('.choice[data-m]').forEach(b=>b.addEventListener('click',()=>{
   mode=b.dataset.m;
-  document.querySelectorAll('.choice').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+  document.querySelectorAll('.choice[data-m]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
   ['buy','comps','appr'].forEach(m=>$('m-'+m).hidden=m!==mode);
-  calc();
+  calc(); drawChart();
 }));
 
 const MEAN={
@@ -365,7 +453,7 @@ function taxes(diff,c,A,fair,mv){
     lead.textContent=c?'Your assessment is in line with or below how other City homes are assessed, so an appeal probably wouldn\'t lower your taxes.':'Fill in steps 1 and 2 to see your estimate.';
     return;}
   box.classList.remove('none');
-  $('t-new').textContent=money(fair); $('t-newnote').textContent=`99% of your estimated value of ${money(mv)}`;
+  $('t-new').textContent=money(fair); $('t-newnote').textContent=`${pct(TYP)} of your estimated value of ${money(mv)}`;
   lead.textContent=`Lowering your assessment by ${money(diff)} would cut your property tax by about:`;
   const y=diff/1000*tr;
   $('peryr').textContent=money(y); $('total').textContent=money(y*n);
@@ -377,24 +465,27 @@ function calc(){
   const steps=[]; let mv=NaN, msg='';
   if(mode==='buy'){
     const p=num($('bp').value), d=$('bd').value, imp=num($('bi').value)||0;
-    if(p>0&&d){const t=grow(p,d,g); mv=t+imp;
+    if(p>0&&d){const t=grow(p,d); mv=t+imp;
       steps.push(`You paid <b>${money(p)}</b> in ${fmtDate(d)}.`);
-      steps.push(`${yrs(d)>=0?'Brought forward':'Brought back'} ${Math.abs(yrs(d)).toFixed(1)} years at ${(g*100).toFixed(1)}% a year to Jan 1, 2026: <b>${money(t)}</b>.`);
+      steps.push(`${yrs(d)>=0?'Brought forward':'Brought back'} ${Math.abs(yrs(d)).toFixed(1)} years ${howGrown(d)} to Jan 1, 2026: <b>${money(t)}</b>.`);
       if(imp) steps.push(`Plus improvements: <b>${money(imp)}</b>, for <b>${money(mv)}</b>.`);
-      if(yrs(d)>6) msg='Your purchase is more than about 6 years old, which makes it weaker evidence. Try "Similar homes sold" too.';
+      if(yrs(d)>5) msg='Your purchase is more than about 5 years old, which makes it weaker evidence. Try "Similar homes sold" too.'+(gmode==='dor'&&new Date(d+'T00:00:00')<new Date(FIRST_RATE_YEAR+'-01-01T00:00:00')?` The state's yearly rates on this page start in ${FIRST_RATE_YEAR}; years before that use the ${FIRST_RATE_YEAR}–2025 average of about ${(PRE_RATE*100).toFixed(0)}% a year.`:'');
     }
   } else if(mode==='comps'){
     const my=num($('mysf').value); const vals=[];
     for(const i of [1,2,3]){const p=num($('c'+i+'p').value), d=$('c'+i+'d').value, s=num($('c'+i+'s').value);
-      if(p>0&&d){let v=grow(p,d,g); let line=`Sale ${i}: ${money(p)} in ${fmtDate(d)}, brought to Jan 1: <b>${money(v)}</b>`;
+      if(p>0&&d){let v=grow(p,d); let line=`Sale ${i}: ${money(p)} in ${fmtDate(d)}, brought to Jan 1: <b>${money(v)}</b>`;
         if(my>0&&s>0){const adj=(my-s)*60; v+=adj; line+=`; ${adj>=0?'+':'−'}${money(Math.abs(adj))} for size difference: <b>${money(v)}</b>`;}
         steps.push(line+'.'); vals.push(v);}}
     if(vals.length){vals.sort((a,b)=>a-b); const m=vals.length%2?vals[(vals.length-1)/2]:(vals[vals.length/2-1]+vals[vals.length/2])/2; mv=m;
       steps.push(`The middle value of ${vals.length} sale${vals.length>1?'s':''}: <b>${money(m)}</b>.`);
-      if(vals.length<2) msg='One sale is thin evidence. Add a second or third similar home.';}
+      if(vals.length<2) msg='One sale is thin evidence. Add a second or third similar home.';
+      const old=[1,2,3].filter(i=>num($('c'+i+'p').value)>0&&$('c'+i+'d').value&&yrs($('c'+i+'d').value)>5);
+      if(old.length) msg=(msg?msg+' ':'')+`Sale ${old.join(' and ')} ${old.length>1?'are':'is'} more than about 5 years old. Older sales say less about today's market; use 2024–2026 sales if you can.`;}
   } else {
     const v=num($('av').value), d=$('ad').value;
-    if(v>0&&d){mv=grow(v,d,g); steps.push(`Appraised at <b>${money(v)}</b> in ${fmtDate(d)}.`); steps.push(`${yrs(d)>=0?'Brought forward':'Brought back'} to Jan 1, 2026 at ${(g*100).toFixed(1)}% a year: <b>${money(mv)}</b>.`);}
+    if(v>0&&d){mv=grow(v,d); steps.push(`Appraised at <b>${money(v)}</b> in ${fmtDate(d)}.`); steps.push(`${yrs(d)>=0?'Brought forward':'Brought back'} to Jan 1, 2026 ${howGrown(d)}: <b>${money(mv)}</b>.`);
+      if(yrs(d)>5) msg='This appraisal is more than about 5 years old, which makes it weak evidence of 2026 value. Try "Similar homes sold" too.';}
   }
   $('msg').textContent=msg; $('msg').hidden=!msg;
   if(!(A>0)||!(mv>0)){
@@ -403,7 +494,7 @@ function calc(){
     $('verdict').textContent='Waiting for your numbers'; $('verdict').className='verdict v-low';
     $('mean').textContent='Enter your numbers above.'; taxes(NaN,'',A); return;
   }
-  const r=A/mv, fair=mv*0.99, diff=A-fair;
+  const r=A/mv, fair=mv*TYP, diff=A-fair;
   steps.push(`Your assessment ÷ that value: ${money(A)} ÷ ${money(mv)} = <b>${Math.round(r*100)}%</b>.`);
   $('steps').innerHTML=steps.map(s=>`<li>${s}</li>`).join('');
   $('ratio').textContent=Math.round(r*100)+'%';
@@ -415,35 +506,102 @@ function calc(){
   else {v='Strong reason to look into it';c='v-strong'}
   $('verdict').textContent=v; $('verdict').className='verdict '+c;
   let m=MEAN[c](r);
-  if(c==='v-look'||c==='v-strong') m+=` At the City's typical 99%, your assessment would be about ${money(fair)}, which is ${money(diff)} lower than it is now.`;
+  if(c==='v-look'||c==='v-strong') m+=` At the City's typical ${pct(TYP)}, your assessment would be about ${money(fair)}, which is ${money(diff)} lower than it is now.`;
   $('mean').textContent=m;
   taxes(diff,c,A,fair,mv);
   $('mark').style.left=Math.max(0,Math.min(100,(r-0.7)/(1.5-0.7)*100))+'%';
 }
 
+// rate chart
+function entryDates(){
+  if(mode==='buy') return [$('bd').value];
+  if(mode==='appr') return [$('ad').value];
+  return [1,2,3].filter(i=>num($('c'+i+'p').value)>0).map(i=>$('c'+i+'d').value);
+}
+function drawChart(){
+  const svg=$('rchart'); if(!svg) return;
+  const W=Math.round(Math.min(600,Math.max(280,svg.getBoundingClientRect().width||420))), H=W<420?200:220, L=36,R=10,T=22,B=28, x0=2015, x1=2027, yMax=0.20;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const X=t=>L+(t-x0)/(x1-x0)*(W-L-R), Y=r=>T+(1-Math.min(r,yMax)/yMax)*(H-T-B);
+  const yrs=Object.keys(RATES).map(Number).sort((a,b)=>a-b);
+  let g='';
+  // band for the period the current entry covers
+  const ds=entryDates().filter(Boolean).map(d=>new Date(d+'T00:00:00')).filter(d=>!isNaN(d));
+  let band='';
+  if(ds.length){
+    const early=new Date(Math.min(...ds)), late=new Date(Math.max(...ds));
+    const fy=d=>d.getFullYear()+(d-new Date(d.getFullYear()+'-01-01T00:00:00'))/YR;
+    const a=Math.max(x0,Math.min(fy(early),2026)), b=Math.min(x1,Math.max(2026,fy(late)));
+    if(a<b){g+=`<rect x="${X(a).toFixed(1)}" y="${T}" width="${(X(b)-X(a)).toFixed(1)}" height="${H-T-B}" fill="var(--accent-soft)"/>`; band=fy(early)<x0?'before 2015':String(Math.floor(fy(early)));}
+  }
+  // grid
+  for(const v of [0,0.05,0.10,0.15,0.20]){
+    g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="1"/>`;
+    g+=`<text x="${L-6}" y="${Y(v)+3.5}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${v*100}%</text>`;
+  }
+  // x labels at year midpoints
+  for(const y of [...yrs,2026]){ if(y%2===1) continue;
+    g+=`<text x="${X(y+0.5)}" y="${H-B+16}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)"${y===2026?' font-style="italic"':''}>${y}</text>`; }
+  // single-rate line
+  if(gmode==='one'){
+    const r=curG();
+    g+=`<line x1="${L}" x2="${W-R}" y1="${Y(r)}" y2="${Y(r)}" stroke="var(--fg)" stroke-width="1.6" stroke-dasharray="5 4"/>`;
+  }
+  // DOR line + points + labels
+  const pts=yrs.map(y=>[X(y+0.5),Y(RATES[y]),RATES[y],y]);
+  g+=`<polyline points="${pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" opacity="${gmode==='dor'?1:0.55}"/>`;
+  // 2026 estimate: dashed segment + hollow point
+  const op=gmode==='dor'?1:0.55, ex=X(2026.5), ey=Y(EST_2026), last=pts[pts.length-1];
+  g+=`<line x1="${last[0].toFixed(1)}" y1="${last[1].toFixed(1)}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3" opacity="${op}"/>`;
+  g+=`<circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="4" fill="var(--bg)" stroke="var(--accent)" stroke-width="2" opacity="${op}"><title>2026 estimate: ${(EST_2026*100).toFixed(1)}%</title></circle>`;
+  g+=`<text x="${ex.toFixed(1)}" y="${(ey-9).toFixed(1)}" text-anchor="middle" font-size="11" fill="var(--muted)" font-style="italic" font-family="var(--f-mono)">~${Math.round(EST_2026*100)}</text>`;
+  for(const [px,py,r,y] of pts){
+    g+=`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="3.5" fill="var(--accent)" opacity="${gmode==='dor'?1:0.55}"><title>${y}: ${(r*100).toFixed(1)}%</title></circle>`;
+    g+=`<text x="${px.toFixed(1)}" y="${(py-8).toFixed(1)}" text-anchor="middle" font-size="11" fill="var(--fg)" font-family="var(--f-mono)">${Math.round(r*100)}</text>`;
+  }
+  svg.innerHTML=svg.querySelector('title').outerHTML+g;
+  let key=`<span class="key"><span class="sw"></span>State's yearly rate (%)</span><span class="key"><span class="sw est"></span>2026 estimate</span>`;
+  if(gmode==='one') key+=`<span class="key"><span class="sw dash"></span>Your rate: ${(curG()*100).toFixed(1)}%</span>`;
+  if(band) key+=`<span class="key"><span class="sw band"></span>Years your ${mode==='comps'?'sales cover':'price covers'} (from ${band})</span>`;
+  $('rkey').innerHTML=key;
+}
+
 // repeat-sales table
-(function(){const ys=(a,b)=>(new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/(365*864e5);
- const R=REPEAT.map(([a,d1,p1,d2,p2])=>{const y=ys(d1,d2);return {a,d1,p1,d2,p2,y,r:Math.pow(p2/p1,1/y)-1}}).sort((x,z)=>x.r-z.r);
- document.querySelector('#rep tbody').innerHTML=R.map(o=>`<tr><td>${o.a}</td><td>${fmtDate(o.d1)}</td><td>${money(o.p1)}</td><td>${fmtDate(o.d2)}</td><td>${money(o.p2)}</td><td>${o.y.toFixed(1)}</td><td>${(o.r*100).toFixed(1)}%</td></tr>`).join('');
- const n=R.length, med=n%2?R[(n-1)/2].r:(R[n/2-1].r+R[n/2].r)/2;
- document.querySelector('#rep tfoot').innerHTML=`<tr><td colspan="6">Median of ${R.length} homes</td><td>${(med*100).toFixed(1)}%</td></tr>`;
+(function(){
+ // Always uses the state's yearly rates (independent of the step-2 choice).
+ const dorF=(d1,d2)=>{let f=1,t=new Date(d1+'T00:00:00');const end=new Date(d2+'T00:00:00');
+   while(t<end){const ny=new Date((t.getFullYear()+1)+'-01-01T00:00:00'), e=end<ny?end:ny, y=t.getFullYear();
+     const r=y>=2026?EST_2026:(RATES[y]!==undefined?RATES[y]:PRE_RATE); f*=Math.pow(1+r,(e-t)/YR); t=e;} return f;};
+ const R=REPEAT.map(([a,d1,p1,d2,p2])=>{const pred=p1*dorF(d1,d2);return {a,d1,p1,d2,p2,pred,r:p2/pred-1}}).sort((x,z)=>x.r-z.r);
+ const sg=v=>(v>=0?'+':'−')+Math.abs(v*100).toFixed(0)+'%';
+ document.querySelector('#rep tbody').innerHTML=R.map(o=>`<tr><td>${o.a}</td><td>${fmtDate(o.d1)}</td><td>${money(o.p1)}</td><td>${fmtDate(o.d2)}</td><td>${money(o.p2)}</td><td>${money(o.pred)}</td><td>${sg(o.r)}</td></tr>`).join('');
+ const n=R.length, med=n%2?R[(n-1)/2].r:(R[n/2-1].r+R[n/2].r)/2, above=R.filter(o=>o.r>0).length;
+ document.querySelector('#rep tfoot').innerHTML=`<tr><td colspan="6">Median of ${n} homes</td><td>${sg(med)}</td></tr>`;
+ $('repnote').textContent=`The typical home's second price landed ${Math.abs(med*100).toFixed(0)}% ${med<0?'below':'above'} what the state's rates predicted, and ${above} of ${n} landed above.`;
 })();
 
-// recent-sales table
-const rows=SALES.map(([a,y,s,d,p,v])=>({a,y,s,d,p,v,r:0}));
+// Recent-sales table and the City's typical ratio (middle assessment-to-price ratio), using the step-2 method
+const rows=SALES.map(([a,y,sf,d,p,v])=>({a,y,d,p,v,t:0,r:0}));
 let sortK='r',dir=-1;
 function pillClass(r){return r<0.9?'v-low':r<=1.1?'v-ok':r<=1.25?'v-look':'v-strong'}
 function draw(){
-  const g=curG(); rows.forEach(o=>o.r=o.v/grow(o.p,o.d,g)); $('gnow').textContent=(g*100).toFixed(1)+'%';
+  rows.forEach(o=>{o.t=grow(o.p,o.d);o.r=o.v/o.t;});
+  const rs=rows.map(o=>o.r).sort((a,b)=>a-b), n=rs.length;
+  TYP=n%2?rs[(n-1)/2]:(rs[n/2-1]+rs[n/2])/2;
+  document.querySelectorAll('.typ').forEach(e=>e.textContent=pct(TYP));
+  const c=k=>rows.filter(o=>pillClass(o.r)===k).length;
+  $('tally').innerHTML=[['v-low','below 90%','assessed low'],['v-ok','90–110%','in line'],['v-look','110–125%','somewhat high'],['v-strong','over 125%','well above']]
+    .map(([k,rng,lab])=>`<div class="${k}"><b>${c(k)}</b><span>${rng}: ${lab}</span></div>`).join('');
   rows.sort((x,y)=>{const A=x[sortK],B=y[sortK];return (A>B?1:A<B?-1:0)*dir});
-  document.querySelector('#tbl tbody').innerHTML=rows.map(o=>`<tr><td>${o.a}</td><td>${o.y}</td><td>${o.s.toLocaleString('en-US')}</td><td>${fmtDate(o.d)}</td><td>${money(o.p)}</td><td>${money(o.v)}</td><td><span class="pill ${pillClass(o.r)}">${Math.round(o.r*100)}%</span></td></tr>`).join('');
+  document.querySelector('#tbl tbody').innerHTML=rows.map(o=>`<tr><td>${o.a}</td><td>${o.y}</td><td>${fmtDate(o.d)}</td><td>${money(o.p)}</td><td>${money(o.t)}</td><td>${money(o.v)}</td><td><span class="pill ${pillClass(o.r)}">${Math.round(o.r*100)}%</span></td></tr>`).join('');
   document.querySelectorAll('#tbl th').forEach(th=>th.setAttribute('aria-sort',th.dataset.k===sortK?(dir>0?'ascending':'descending'):'none'));
 }
 document.querySelectorAll('#tbl th').forEach(th=>{th.tabIndex=0;const go=()=>{const k=th.dataset.k;dir=(k===sortK)?-dir:(k==='a'?1:-1);sortK=k;draw()};th.addEventListener('click',go);th.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
 
-$('f').addEventListener('input',()=>{calc();draw();});
+$('f').addEventListener('input',()=>{draw();calc();drawChart();});
 $('f').addEventListener('submit',e=>e.preventDefault());
-draw(); calc();
+draw(); calc(); drawChart();
+let rzT; window.addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawChart,120);});
 </script>
 </body>
 </html>
